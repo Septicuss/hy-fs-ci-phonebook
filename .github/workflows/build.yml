@@ -17,10 +17,12 @@ jobs:
       - uses: actions/setup-node@v6
         with:
           node-version: '24'
+
       - name: (Frontend) Install dependencies
         run: npm --prefix phonebook-frontend ci
       - name: (Frontend) Lint
-        run: npm --prefix phonebook-backend run lint
+        run: npm --prefix phonebook-frontend run lint
+
       - name: (Backend) Install dependencies
         run: npm --prefix phonebook-backend ci
       - name: (Backend) Lint
