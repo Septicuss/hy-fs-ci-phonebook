@@ -11,10 +11,10 @@
     "globals": "^17.4.0"
   },
   "scripts": {
-    "start": "bun run index.js",
-    "dev": "bun run --watch index.js",
-    "build:ui": "rm -rf dist && cd ../../osa2/phonebook && bunx vite build && cp -R dist ../../osa3/phonebook/dist",
-    "build:full": "bun run build:ui && docker build -t phonebook ."
+    "start": "npm run index.js",
+    "dev": "npm run --watch index.js",
+    "lint": "eslint .",
+    "build:ui": "rm -rf dist && cd ../phonebook-frontend && npx vite build && cp -R dist ../phonebook-backend/dist"
   },
   "peerDependencies": {
     "typescript": "^5"
