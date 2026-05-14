@@ -54,3 +54,17 @@ jobs:
         run: npm --prefix phonebook-backend ci
       - name: (Backend) Full Build
         run: npm --prefix phonebook-backend run build:ui
+
+  tag-release:
+    needs: [full-build]
+    runs-on: ubuntu-latest
+    if: ${{ github.ref == 'refs/heads/main' && !contains(join(github.event.commits.*.message, ' '), '#skip') }}
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+      - name: Bump version and push tag
+        uses: anothrNick/github-tag-action@1.75.0
+        env:
+          DEFAULT_BUMP: patch
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
