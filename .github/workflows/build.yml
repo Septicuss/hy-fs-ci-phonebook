@@ -10,22 +10,47 @@ on:
     types: [opened, synchronize]
 
 jobs:
-  build-and-lint:
+  lint-frontend:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: phonebook-frontend
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-node@v6
         with:
           node-version: '24'
+      - name: (Frontend) Install dependencies
+        run: npm ci
+      - name: (Frontend) Lint
+        run: npm run lint
 
+  lint-backend:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: phonebook-backend
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
+      - name: (Backend) Install dependencies
+        run: npm ci
+      - name: (Backend) Lint
+        run: npm run lint
+
+  full-build:
+    runs-on: ubuntu-latest
+    needs: [lint-backend, lint-frontend]
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-node@v6
+        with:
+          node-version: '24'
       - name: (Frontend) Install dependencies
         run: npm --prefix phonebook-frontend ci
-      - name: (Frontend) Lint
-        run: npm --prefix phonebook-frontend run lint
-
       - name: (Backend) Install dependencies
         run: npm --prefix phonebook-backend ci
-      - name: (Backend) Lint
-        run: npm --prefix phonebook-backend run lint
       - name: (Backend) Full Build
-        run: npm --prefix phonebook-backend run
+        run: npm --prefix phonebook-backend run build:ui
