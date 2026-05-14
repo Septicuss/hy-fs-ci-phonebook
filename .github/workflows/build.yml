@@ -9,6 +9,9 @@ on:
       - main
     types: [opened, synchronize]
 
+permissions:
+  contents: write
+
 jobs:
   lint-frontend:
     runs-on: ubuntu-latest
