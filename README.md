@@ -6,5 +6,4 @@
 - [Deployed Pokedex](https://hy-fs-ci-pokedex.onrender.com/)
 
 ### Success Webhook
-<img width="312" height="107" alt="image" src="https://github.com/user-attachments/assets/aae66227-e464-42a6-bb08-cc3698603a0b" />
-
+<img width="321" height="125" alt="image" src="https://github.com/user-attachments/assets/3a550a81-8c2d-414d-9a44-c243b52b3d22" />
