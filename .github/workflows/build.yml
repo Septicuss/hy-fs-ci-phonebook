@@ -71,3 +71,39 @@ jobs:
         env:
           DEFAULT_BUMP: patch
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    outputs:
+      new_tag: ${{ steps.tag_version.outputs.new_tag }}
+
+  notify-success:
+    needs: [tag-release]
+    runs-on: ubuntu-latest
+    if: ${{ needs.tag-release.result == 'success' }}
+    steps:
+      - uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          content: "New version released"
+          status: 'Success'
+          nodetail: 'true'
+          title: '${{ needs.tag-release.outputs.new_tag }}'
+          description: |
+            **Commit:** ${{ github.sha }}
+            **Message:** ${{ github.event.head_commit.message || github.event.commits[0].message }}
+
+  notify-failure:
+    needs: [ tag-release ]
+    runs-on: ubuntu-latest
+    if: ${{ needs.tag-release.result == 'failure' }}
+    steps:
+      - uses: sarisia/actions-status-discord@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          content: "Failed to tag release"
+          status: 'Failure'
+          nodetail: 'true'
+          title: 'Failed to tag release'
+          description: |
+            **Commit:** ${{ github.sha }}
+            **Message:** ${{ github.event.head_commit.message || github.event.commits[0].message }}
+
+            [View Workflow Run](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
